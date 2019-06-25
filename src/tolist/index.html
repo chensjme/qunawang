@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ch">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TodoList</title>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" name="" id="" v-model="newList" />
+        <button @click='summit'>提交</button>
+        <ul>
+            <!-- <li v-for="item in list" :key = "item">{{item}}</li> -->
+            <todo-item :content="item"
+                        :index = 'index'
+                         v-for="(item,index) in list" 
+                         :key="item"
+                         @delete= "deleteItem"
+                         ></todo-item>
+        </ul>
+    </div>
+
+    <script>
+
+        // Vue.component('Item', {
+        //     template: "<li>{{content}}</li>",
+        //     props: ['content'],
+        // })
+        var TodoItem = {
+            template: "<li @click=handleItemClick(index)>{{content}}</li>",
+            props: ['content','index'],
+            methods: {
+                handleItemClick(index){
+                    this.$emit("delete",index)
+                }
+            },
+        }
+        var app = new Vue({
+            el: '#app',
+            components:{
+                TodoItem,
+            },
+            data: {
+                list: [],
+                newList: ''
+            },
+            methods: {
+                summit() {
+                    this.list.push(this.newList);
+                    this.newList = '';
+                },
+                deleteItem(index) {
+                    this.list.splice(index,1);
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>
